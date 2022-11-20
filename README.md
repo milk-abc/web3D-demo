@@ -1,2 +1,2 @@
 # webgl
-webgl study
+学习webgl的demo

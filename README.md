@@ -13,7 +13,7 @@ web3D-demo主要分享threejs和webgl的一些Demo，会持续更新......
 
 [阿里云预览地址][(http://123.56.102.217:5000/)]
 
-![alt text](image.png)
+![alt text](Demo1/image.png)
 
 #### 本地运行
 - npm install

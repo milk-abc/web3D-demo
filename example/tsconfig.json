@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "sourceMap": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "alwaysStrict": true,
+    "target": "es6",
+    "experimentalDecorators": true,
+    "typeRoots": ["../node_modules/@types", "./img.d.ts"],
+    "lib": ["es2017", "dom"],
+    "plugins": []
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["build", "node_modules"]
+}

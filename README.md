@@ -1,8 +1,8 @@
 # web3D-demo
 
-threejs,webgl 的 3D demo
-
-npm install
-npm run start
-npm run build
-![alt text](image.png)
+## Demo One
+ - Live demo at http://123.56.102.217:5000/
+ ![alt text](image.png)
+## TO RUN
+- npm install
+- npm run start

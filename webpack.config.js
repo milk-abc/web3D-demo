@@ -1,7 +1,7 @@
 import path from 'path';
 
 export default {
-	entry: './source/index.ts',
+	entry: './src/index.ts',
 	stats: {
 		children: true,
 	},

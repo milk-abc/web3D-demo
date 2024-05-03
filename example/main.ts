@@ -17,7 +17,7 @@ import {
   PointLight,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { PointCloudOctree, Potree } from "../source";
+import { PointCloudOctree, Potree } from "../src";
 import img from "./FloorsCheckerboard_S_Diffuse.jpg";
 
 document.body.onload = function () {

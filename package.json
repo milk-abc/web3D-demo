@@ -7,10 +7,10 @@
     "dev": "webpack --mode development --watch --progress --stats-children",
     "build": "webpack --mode production --config webpack.example.js",
     "start": "npm run build && webpack-dev-server --config webpack.example.js --mode development --progress --port 5200",
-    "docs": "jsdoc -d docs source",
+    "docs": "jsdoc -d docs src",
     "pub": "npm run build && npm publish --access public .",
-    "lint": "eslint --ext .js source",
-    "lint-fix": "eslint --ext .js --fix source"
+    "lint": "eslint --ext .js src",
+    "lint-fix": "eslint --ext .js --fix src"
   },
   "repository": {
     "type": "git",

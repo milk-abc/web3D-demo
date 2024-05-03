@@ -1,7 +1,7 @@
 {
 	"compileOnSave": false,
 	"compilerOptions": {
-		"baseUrl": "./source/",
+		"baseUrl": "./src/",
 		"sourceMap": true,
 		"declaration": true,
 		"declarationDir": "dist",
@@ -20,7 +20,7 @@
 		"lib": ["es2017", "dom"],
 		"plugins": []
 	},
-	"include": ["source/**/*.ts"],
+	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules"]
   }
   

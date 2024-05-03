@@ -1,2 +1,2 @@
-# webgl
-学习webgl的demo
+# web3D-demo
+threejs,webgl的3D demo

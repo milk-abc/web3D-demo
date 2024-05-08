@@ -139,7 +139,7 @@ export class Potree implements IPotree {
     const visibleNodes: PointCloudOctreeNode[] = [];
     const unloadedGeometry: PointCloudOctreeGeometryNode[] = [];
 
-    // calculate object space frustum and cam pos and setup priority queue
+    // 计算视锥 、相机位置、设置优先级队列
     const { frustums, cameraPositions, priorityQueue } =
       this.updateVisibilityStructures(pointClouds, camera);
 
@@ -147,11 +147,11 @@ export class Potree implements IPotree {
     let exceededMaxLoadsToGPU = false;
     let nodeLoadFailed = false;
     let queueItem: QueueItem | undefined;
-
+    //将队列中的节点都弹出
     while ((queueItem = priorityQueue.pop()) !== undefined) {
       let node = queueItem.node;
 
-      // If we will end up with too many points, we stop right away.
+      // 点数过多，立刻停止
       if (numVisiblePoints + node.numPoints > this.pointBudget) {
         break;
       }
@@ -169,10 +169,9 @@ export class Potree implements IPotree {
       ) {
         continue;
       }
-
       numVisiblePoints += node.numPoints;
       pointCloud.numVisiblePoints += node.numPoints;
-
+      //获取当前节点的父节点
       const parentNode = queueItem.parent;
 
       if (isGeometryNode(node) && (!parentNode || isTreeNode(parentNode))) {
@@ -184,7 +183,9 @@ export class Potree implements IPotree {
           if (node.loaded && loadedToGPUThisFrame >= MAX_LOADS_TO_GPU) {
             exceededMaxLoadsToGPU = true;
           }
+          //将当前节点加入未加载的节点
           unloadedGeometry.push(node);
+          //将点云的可见节点中加入当前节点
           pointCloud.visibleGeometry.push(node);
         } else {
           nodeLoadFailed = true;
@@ -194,8 +195,10 @@ export class Potree implements IPotree {
 
       if (isTreeNode(node)) {
         // @ts-ignore
+        //如果当前节点是树节点，则将更新点云的可见点
         this.updateTreeNodeVisibility(pointCloud, node, visibleNodes);
         // @ts-ignore
+        //将当前节点的几何节点加入可见节点
         pointCloud.visibleGeometry.push(node.geometryNode);
       }
 
@@ -203,7 +206,7 @@ export class Potree implements IPotree {
         0.5 *
         renderer.getSize(this._rendererSize).height *
         renderer.getPixelRatio();
-
+      //更新子节点的可见性
       this.updateChildVisibility(
         queueItem,
         priorityQueue,
@@ -213,14 +216,15 @@ export class Potree implements IPotree {
         camera,
         halfHeight
       );
-    } // end priority queue loop
-
+    } 
+    // 未加载的节点个数
     const numNodesToLoad = Math.min(
       this.maxNumNodesLoading,
       unloadedGeometry.length
     );
     const nodeLoadPromises: Promise<void>[] = [];
     for (let i = 0; i < numNodesToLoad; i++) {
+      //进行节点加载，将其放入promise
       nodeLoadPromises.push(unloadedGeometry[i].load());
     }
 
@@ -290,12 +294,12 @@ export class Potree implements IPotree {
 
       const screenPixelRadius = radius * projectionFactor;
 
-      // Don't add the node if it'll be too small on the screen.
+      
       if (screenPixelRadius < pointCloud.minNodePixelSize) {
         continue;
       }
 
-      // Nodes which are larger will have priority in loading/displaying.
+      
       const weight =
         distance < radius ? Number.MAX_VALUE : screenPixelRadius + 1 / distance;
 
@@ -384,9 +388,12 @@ export class Potree implements IPotree {
 
         camera.updateMatrixWorld(false);
 
-        // Furstum in object space.
+        
+        //视图矩阵就是相机的世界矩阵的逆
         const inverseViewMatrix = camera.matrixWorldInverse;
+        //点云的世界矩阵
         const worldMatrix = pointCloud.matrixWorld;
+        //相机的投影矩阵*视图矩阵*点云的世界矩阵，可以将投影矩阵用于获取视锥体的六个面
         frustumMatrix
           .identity()
           .multiply(camera.projectionMatrix)
@@ -394,8 +401,10 @@ export class Potree implements IPotree {
           .multiply(worldMatrix);
         frustums.push(new Frustum().setFromProjectionMatrix(frustumMatrix));
 
-        // Camera position in object space
+        
+        //世界矩阵的逆是变换到局部坐标系
         inverseWorldMatrix.copy(worldMatrix).invert();
+        //将相机变换到世界坐标系下，从而获取世界坐标系下的相机位置
         cameraMatrix
           .identity()
           .multiply(inverseWorldMatrix)
@@ -407,7 +416,7 @@ export class Potree implements IPotree {
           priorityQueue.push(new QueueItem(i, weight, pointCloud.root));
         }
 
-        // Hide any previously visible nodes. We will later show only the needed ones.
+        
         if (isTreeNode(pointCloud.root)) {
           // @ts-ignore
           pointCloud.hideDescendants(pointCloud?.root?.sceneNode);

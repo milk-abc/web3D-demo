@@ -11,15 +11,13 @@ export class LRUItem
 	constructor(public node: Node) {}
 }
 
-/**
- * A doubly-linked-list of the least recently used elements.
- */
+
 export class LRU 
 {
-	// the least recently used item
+	
 	first: LRUItem | null = null;
 
-	// the most recently used item
+	
 	last: LRUItem | null = null;
 
 	numPoints: number = 0;
@@ -38,10 +36,7 @@ export class LRU
 		return this.items.has(node.id);
 	}
 
-	/**
-   * Makes the specified the most recently used item. if the list does not contain node, it will
-   * be added.
-   */
+	
 	touch(node: Node) 
 	{
 		if (!node.loaded) 
@@ -83,7 +78,7 @@ export class LRU
 	{
 		if (!item.previous) 
 		{
-			// handle touch on first element
+			
 			if (item.next) 
 			{
 				this.first = item.next;
@@ -100,11 +95,11 @@ export class LRU
 		}
 		else if (!item.next) 
 		{
-			// handle touch on last element
+			
 		}
 		else 
 		{
-			// handle touch on any other element
+			
 			item.previous.next = item.next;
 			item.next.previous = item.previous;
 			item.previous = this.last;
@@ -180,7 +175,7 @@ export class LRU
 
 	disposeSubtree(node: Node): void 
 	{
-		// Collect all the nodes which are to be disposed and removed.
+		// 收集所有要移除和释放的节点和它下面所有的子节点
 		const nodesToDispose: Node[] = [node];
 		node.traverse((n) => 
 		{
@@ -190,7 +185,7 @@ export class LRU
 			}
 		});
 
-		// Dispose of all the nodes in one go.
+		// 一次释放所有节点
 		for (const n of nodesToDispose) 
 		{
 			n.dispose();

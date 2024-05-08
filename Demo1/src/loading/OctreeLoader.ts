@@ -34,8 +34,9 @@ export class NodeLoader {
 
     try {
       if (node.nodeType === 2) {
-        // TODO: Investigate
+        // 加载层级
         await this.loadHierarchy(node);
+        
       }
 
       let { byteOffset, byteSize } = node;
@@ -427,12 +428,12 @@ export class OctreeLoader {
 
     let attributes = OctreeLoader.parseAttributes(metadata.attributes);
     // console.log(attributes)
-
+    // 使用url、线程初始化nodeLoader
     let loader = new NodeLoader(url, this.workerPool, metadata);
     loader.attributes = attributes;
     loader.scale = metadata.scale;
     loader.offset = metadata.offset;
-
+    // 初始化OctreeGeometry
     let octree = new OctreeGeometry(
       loader,
       new Box3(
